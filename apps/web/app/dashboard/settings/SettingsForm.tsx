@@ -65,7 +65,7 @@ export default function SettingsForm({
 
           <div className="mt-3">
             <a
-              href={`https://t.me/${process.env.NEXT_PUBLIC_TELEGRAM_BOT_NAME || "trypingabot"}?start=${userId}`}
+              href={`https://t.me/${process.env.NEXT_PUBLIC_TELEGRAM_BOT_NAME || "pingapingbot"}?start=${userId}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm text-blue-600 hover:underline font-medium"

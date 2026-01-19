@@ -21,7 +21,10 @@ export default async function DashboardPage(props: DashboardPageProps) {
 
   // Handle Installation Linking
   let successMessage = "";
-  if (installationId && setupAction === "install") {
+  if (
+    installationId &&
+    (setupAction === "install" || setupAction === "update")
+  ) {
     const id = parseInt(
       Array.isArray(installationId) ? installationId[0] : installationId,
       10,
