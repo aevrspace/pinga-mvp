@@ -49,30 +49,34 @@ export default async function HelpPage({ params }: HelpPageProps) {
   // If no slug, show help index
   if (!slug) {
     return (
-      <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 py-12 px-4">
+      <div className="min-h-screen bg-white py-12 px-4 text-black">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-5xl font-bold text-gray-900 mb-4">
-              📚 Pinga Help Center
+          <div className="text-center mb-16">
+            <h1 className="text-5xl font-bold tracking-tight mb-4 text-black">
+              Help Center
             </h1>
-            <p className="text-xl text-gray-600">
+            <p className="text-xl text-gray-500">
               Everything you need to master your notification hub
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 mb-12">
+          <div className="grid md:grid-cols-2 gap-6 mb-16">
             {guides.map((guide) => (
               <Link
                 key={guide.slug}
                 href={`/help/${guide.slug}`}
-                className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow border border-gray-100"
+                className="group bg-white rounded-2xl p-8 border border-gray-100 hover:border-black transition-all hover:shadow-sm"
               >
-                <div className="text-4xl mb-3">{guide.icon}</div>
-                <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+                <div className="text-4xl mb-4 grayscale group-hover:grayscale-0 transition-all">
+                  {guide.icon}
+                </div>
+                <h2 className="text-2xl font-bold text-black mb-2">
                   {guide.title}
                 </h2>
-                <p className="text-gray-600">{guide.description}</p>
-                <div className="mt-4 text-blue-600 font-medium flex items-center gap-2">
+                <p className="text-gray-500 leading-relaxed mb-6">
+                  {guide.description}
+                </p>
+                <div className="text-black font-medium flex items-center gap-2 group-hover:gap-3 transition-all">
                   Read guide
                   <svg
                     className="w-4 h-4"
@@ -84,7 +88,7 @@ export default async function HelpPage({ params }: HelpPageProps) {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth={2}
-                      d="M9 5l7 7-7 7"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
                     />
                   </svg>
                 </div>
@@ -92,40 +96,40 @@ export default async function HelpPage({ params }: HelpPageProps) {
             ))}
           </div>
 
-          <div className="bg-white rounded-xl p-8 shadow-md">
-            <h2 className="text-2xl font-semibold mb-4">Quick Links</h2>
+          <div className="bg-gray-50 rounded-2xl p-8 md:p-12">
+            <h2 className="text-2xl font-bold mb-6 text-black">Quick Links</h2>
             <div className="grid md:grid-cols-2 gap-4">
               <Link
                 href="/dashboard/settings"
-                className="flex items-center gap-3 text-gray-700 hover:text-blue-600 transition-colors"
+                className="flex items-center gap-3 text-gray-600 hover:text-black transition-colors"
               >
-                <span className="text-2xl">⚙️</span>
-                <span>Settings Dashboard</span>
+                <span className="text-xl">⚙️</span>
+                <span className="font-medium">Settings Dashboard</span>
               </Link>
               <a
                 href="https://github.com/yourrepo/pinga"
-                className="flex items-center gap-3 text-gray-700 hover:text-blue-600 transition-colors"
+                className="flex items-center gap-3 text-gray-600 hover:text-black transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <span className="text-2xl">🐛</span>
-                <span>Report an Issue</span>
+                <span className="text-xl">🐛</span>
+                <span className="font-medium">Report an Issue</span>
               </a>
               <a
                 href="https://t.me/pingacommunity"
-                className="flex items-center gap-3 text-gray-700 hover:text-blue-600 transition-colors"
+                className="flex items-center gap-3 text-gray-600 hover:text-black transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <span className="text-2xl">💬</span>
-                <span>Join Community</span>
+                <span className="text-xl">💬</span>
+                <span className="font-medium">Join Community</span>
               </a>
               <a
                 href="mailto:support@pinga.app"
-                className="flex items-center gap-3 text-gray-700 hover:text-blue-600 transition-colors"
+                className="flex items-center gap-3 text-gray-600 hover:text-black transition-colors"
               >
-                <span className="text-2xl">📧</span>
-                <span>Email Support</span>
+                <span className="text-xl">📧</span>
+                <span className="font-medium">Email Support</span>
               </a>
             </div>
           </div>
@@ -149,17 +153,15 @@ export default async function HelpPage({ params }: HelpPageProps) {
   // Handle error case
   if (contentError) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Guide Not Found
-          </h1>
-          <p className="text-gray-600 mb-8">
+      <div className="min-h-screen flex items-center justify-center bg-white text-black">
+        <div className="text-center px-4">
+          <h1 className="text-4xl font-bold mb-4">Guide Not Found</h1>
+          <p className="text-gray-500 mb-8">
             The guide you&apos;re looking for doesn&apos;t exist yet.
           </p>
           <Link
             href="/help"
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="px-6 py-3 bg-black text-white rounded-full hover:bg-gray-800 transition-colors"
           >
             Back to Help Center
           </Link>
@@ -171,13 +173,13 @@ export default async function HelpPage({ params }: HelpPageProps) {
   const guide = guides.find((g) => g.slug === slug);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white text-black">
       {/* Header */}
-      <div className="bg-linear-to-r from-blue-600 to-indigo-600 text-white py-12 px-4">
-        <div className="max-w-4xl mx-auto">
+      <div className="border-b border-gray-100 sticky top-0 z-10 backdrop-blur-md bg-white/80">
+        <div className="max-w-3xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link
             href="/help"
-            className="inline-flex items-center gap-2 text-blue-100 hover:text-white mb-4 transition-colors"
+            className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-black transition-colors"
           >
             <svg
               className="w-4 h-4"
@@ -189,50 +191,61 @@ export default async function HelpPage({ params }: HelpPageProps) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d="M15 19l-7-7 7-7"
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
               />
             </svg>
-            Back to Help Center
+            Back
           </Link>
+          <span className="font-semibold text-sm tracking-tight">
+            Help Center
+          </span>
+        </div>
+      </div>
+
+      <div className="bg-gray-50/50 py-16 px-4 border-b border-gray-100">
+        <div className="max-w-3xl mx-auto text-center">
           {guide && (
             <>
-              <div className="text-5xl mb-4">{guide.icon}</div>
-              <h1 className="text-4xl font-bold mb-2">{guide.title}</h1>
-              <p className="text-xl text-blue-100">{guide.description}</p>
+              <div className="text-5xl mb-6 grayscale hover:grayscale-0 transition-all cursor-default inline-block">
+                {guide.icon}
+              </div>
+              <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-black">
+                {guide.title}
+              </h1>
+              <p className="text-xl text-gray-500 max-w-lg mx-auto">
+                {guide.description}
+              </p>
             </>
           )}
         </div>
       </div>
 
       {/* Content */}
-      <div className="max-w-4xl mx-auto py-12 px-4">
+      <div className="max-w-3xl mx-auto py-16 px-6">
         <article
-          className="prose prose-lg prose-blue max-w-none
-            prose-headings:font-bold
-            prose-h1:text-4xl prose-h1:mb-4
-            prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b-2 prose-h2:border-gray-200
-            prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-3
-            prose-p:text-gray-700 prose-p:leading-relaxed
-            prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
-            prose-strong:text-gray-900 prose-strong:font-semibold
-            prose-code:text-pink-600 prose-code:bg-gray-100 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none
-            prose-pre:bg-gray-900 prose-pre:text-gray-100
-            prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:bg-blue-50 prose-blockquote:py-1 prose-blockquote:px-4
-            prose-ul:list-disc prose-ul:pl-6
-            prose-ol:list-decimal prose-ol:pl-6
-            prose-li:text-gray-700 prose-li:my-1
-            prose-img:rounded-lg prose-img:shadow-lg
-            prose-table:border prose-table:border-gray-300
-            prose-th:bg-gray-50 prose-th:p-3
-            prose-td:p-3 prose-td:border prose-td:border-gray-200"
+          className="prose prose-lg prose-gray max-w-none
+            prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-black
+            prose-h1:text-4xl prose-h1:mb-6
+            prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4
+            prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
+            prose-p:text-gray-600 prose-p:leading-relaxed
+            prose-a:text-black prose-a:underline hover:prose-a:text-gray-600
+            prose-strong:text-black prose-strong:font-semibold
+            prose-code:text-black prose-code:bg-gray-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:font-medium prose-code:before:content-none prose-code:after:content-none
+            prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:rounded-xl prose-pre:shadow-sm
+            prose-blockquote:border-l-2 prose-blockquote:border-black prose-blockquote:bg-gray-50 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:not-italic prose-blockquote:rounded-r-lg
+            prose-ul:list-disc prose-ul:pl-0 prose-ul:space-y-2
+            prose-li:text-gray-600 prose-li:pl-2
+            prose-img:rounded-xl prose-img:shadow-sm prose-img:border prose-img:border-gray-100
+            "
           dangerouslySetInnerHTML={{ __html: html! }}
         />
       </div>
 
       {/* Footer Navigation */}
-      <div className="max-w-4xl mx-auto px-4 py-8 border-t">
-        <h3 className="text-lg font-semibold mb-4">More Guides</h3>
-        <div className="grid md:grid-cols-3 gap-4">
+      <div className="max-w-5xl mx-auto px-6 py-16 border-t border-gray-100">
+        <h3 className="text-lg font-bold mb-6 text-black">More Guides</h3>
+        <div className="grid md:grid-cols-3 gap-6">
           {guides
             .filter((g) => g.slug !== slug)
             .slice(0, 3)
@@ -240,13 +253,17 @@ export default async function HelpPage({ params }: HelpPageProps) {
               <Link
                 key={guide.slug}
                 href={`/help/${guide.slug}`}
-                className="p-4 border rounded-lg hover:border-blue-500 hover:shadow-md transition-all"
+                className="group p-6 border border-gray-100 rounded-xl hover:border-black transition-all"
               >
-                <div className="text-3xl mb-2">{guide.icon}</div>
-                <h4 className="font-semibold text-gray-900 mb-1">
+                <div className="text-3xl mb-3 grayscale group-hover:grayscale-0 transition-all">
+                  {guide.icon}
+                </div>
+                <h4 className="font-bold text-black mb-1 group-hover:underline decoration-1 underline-offset-4">
                   {guide.title}
                 </h4>
-                <p className="text-sm text-gray-600">{guide.description}</p>
+                <p className="text-sm text-gray-500 line-clamp-2">
+                  {guide.description}
+                </p>
               </Link>
             ))}
         </div>
