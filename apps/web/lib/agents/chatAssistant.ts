@@ -1,4 +1,4 @@
-import { generateText, ModelMessage, tool } from "ai";
+import { ToolLoopAgent, ModelMessage, tool, stepCountIs } from "ai";
 import { createGroq } from "@ai-sdk/groq";
 import { z } from "zod";
 
@@ -10,8 +10,7 @@ interface ChatInput {
 
 export async function generateChatResponse(
   input: ChatInput,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): Promise<{ text: string; history: any[] } | undefined> {
+): Promise<{ text: string; history: ModelMessage[] } | undefined> {
   if (!process.env.GROQ_API_KEY) {
     console.error("GROQ_API_KEY not configured");
     return {
@@ -25,9 +24,9 @@ export async function generateChatResponse(
   });
 
   try {
-    const result = await generateText({
+    const agent = new ToolLoopAgent({
       model: groq("llama-3.3-70b-versatile"),
-      system: `You are Pinga, a friendly and enthusiastic developer companion! 🚀
+      instructions: `You are Pinga, a friendly and enthusiastic developer companion! 🚀
 You help developers track their deployments, issues, and notifications.
 
 Personality:
@@ -38,18 +37,7 @@ Personality:
 - If asked for help: Direct them to the dashboard or "/help" command.
 - Keep responses concise within telegram limits.
 
-User Context:
-- Talking to: ${input.senderName || "Friend"}
-
-Goal:
-- Reply to the user's message in character.`,
-      messages: [
-        ...(input.history || []),
-        {
-          role: "user",
-          content: input.message,
-        },
-      ],
+Talking to: ${input.senderName || "Friend"}`,
       tools: {
         get_current_time: tool({
           description: "Get the current server time",
@@ -68,11 +56,17 @@ Goal:
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } as any),
       },
-      maxSteps: 5,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any);
+      stopWhen: stepCountIs(5), // Allow up to 5 steps for tool usage
+    });
 
-    console.log("[ChatAssistant] GenerateText Result:", {
+    const result = await agent.generate({
+      messages: [
+        ...(input.history || []),
+        { role: "user", content: input.message },
+      ],
+    });
+
+    console.log("[ChatAssistant] Agent Result:", {
       text: result.text,
       toolCallsLen: result.toolCalls?.length,
       finishReason: result.finishReason,
@@ -80,7 +74,7 @@ Goal:
 
     return {
       text: result.text,
-      history: [], // Still empty for now as verified in previous plan
+      history: [], // Still empty as per MVP plan
     };
   } catch (error) {
     console.error("Failed to generate chat response:", error);
