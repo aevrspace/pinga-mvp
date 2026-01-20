@@ -58,6 +58,10 @@ export async function sendMessage(
     return false;
   }
 
+  console.log(
+    `[Telegram] Sending message to chat_id: ${chatId} (Token starts with: ${botToken.substring(0, 5)}...)`,
+  );
+
   const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
   try {
@@ -78,11 +82,14 @@ export async function sendMessage(
     }).finally(() => clearTimeout(timeoutId));
 
     if (!response.ok) {
-      const error = await response.text();
-      console.error("Telegram API error:", error);
+      const errorText = await response.text();
+      console.error(
+        `[Telegram] API Error! Status: ${response.status} | Chat: ${chatId} | Response: ${errorText}`,
+      );
       return false;
     }
 
+    console.log(`[Telegram] Message sent successfully to ${chatId}`);
     return true;
   } catch (error: unknown) {
     const err = error as Error;

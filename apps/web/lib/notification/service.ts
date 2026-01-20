@@ -98,6 +98,9 @@ export class NotificationService {
 
         const channelImpl = this.channels.get(userChannel.type);
         if (channelImpl) {
+          console.log(
+            `[NotificationService] Dispatching to channel: ${userChannel.name} (${userChannel.type})`,
+          );
           try {
             const success = await channelImpl.send(
               userChannel.config as ChannelConfig,
