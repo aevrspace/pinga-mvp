@@ -1,4 +1,4 @@
-# Pinga - Universal Webhook Notification System
+# Pinga - Universal Webhook Notification System.
 
 Pinga is a multi-tenant SaaS platform that turns webhooks (GitHub, Render, etc.) into rich, structured Telegram notifications. It is designed for developers and teams who want to keep track of their projects without spamming their channels with raw JSON.
 
