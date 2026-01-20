@@ -16,8 +16,17 @@ export async function POST(request: NextRequest) {
     if (update.message && update.message.text) {
       const { text, chat } = update.message;
 
+      // Enhanced Logging
+      console.log(
+        `[Telegram Webhook] Received message in ${chat.type} (${chat.id}):`,
+        text,
+      );
+
       // Handle /help command
-      if (text === "/help" || text === "/help@pingapingbot") {
+      if (
+        text.toLowerCase() === "/help" ||
+        text.toLowerCase().startsWith("/help@")
+      ) {
         const isGroup = chat.type === "group" || chat.type === "supergroup";
         const helpMessage = isGroup
           ? `🤖 *Pinga Bot - Group Chat Setup*\n\n` +
@@ -182,22 +191,32 @@ export async function POST(request: NextRequest) {
         }
       } else if (!text.startsWith("/")) {
         // Handle Chat / AI Assistant
+        const botUsername = (
+          process.env.TELEGRAM_BOT_NAME || "pingapingbot"
+        ).toLowerCase();
+        const lowerText = text.toLowerCase();
         const isGroup = chat.type === "group" || chat.type === "supergroup";
-        const botUsername = "pingapingbot"; // Ideally from env or me info, hardcoded for now based on help text
 
         let shouldReply = !isGroup; // Always reply in DMs
 
         // If in group, only reply if mentioned or replying to bot
         if (isGroup) {
-          if (text.includes(`@${botUsername}`)) {
+          // Check for @mention or reply
+          if (lowerText.includes(`@${botUsername}`)) {
+            console.log(`[Telegram] Bot mentioned in group ${chat.id}`);
             shouldReply = true;
           }
-          if (update.message.reply_to_message?.from?.username === botUsername) {
+          if (
+            update.message.reply_to_message?.from?.username?.toLowerCase() ===
+            botUsername
+          ) {
+            console.log(`[Telegram] Reply to bot in group ${chat.id}`);
             shouldReply = true;
           }
         }
 
         if (shouldReply) {
+          console.log(`[Telegram] Generating AI response for ${chat.id}`);
           const { generateChatResponse } =
             await import("@/lib/agents/chatAssistant");
 
@@ -210,6 +229,10 @@ export async function POST(request: NextRequest) {
           if (response) {
             await sendPlainMessage(response, chat.id.toString());
           }
+        } else if (isGroup) {
+          console.log(
+            `[Telegram] Group message ignored (no mention): ${text.substring(0, 20)}...`,
+          );
         }
       }
     }
