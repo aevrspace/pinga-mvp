@@ -222,6 +222,47 @@ export default async function DashboardPage(props: DashboardPageProps) {
           )}
         </div>
       </div>
+
+      {/* Help Section */}
+      <div className="bg-linear-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
+        <div className="flex items-start gap-4">
+          <div className="text-4xl">📚</div>
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              Need Help Getting Started?
+            </h3>
+            <p className="text-gray-600 text-sm mb-4">
+              Check out our guides to make the most of Pinga
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <a
+                href="/help/getting-started"
+                className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700 bg-white px-4 py-2 rounded-lg border border-blue-200 hover:border-blue-300 transition-colors"
+              >
+                🚀 Getting Started
+              </a>
+              <a
+                href="/help/telegram-groups"
+                className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700 bg-white px-4 py-2 rounded-lg border border-blue-200 hover:border-blue-300 transition-colors"
+              >
+                👥 Telegram Groups
+              </a>
+              <a
+                href="/help/filtering"
+                className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700 bg-white px-4 py-2 rounded-lg border border-blue-200 hover:border-blue-300 transition-colors"
+              >
+                🎯 Webhook Filtering
+              </a>
+              <a
+                href="/help/sources"
+                className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700 bg-white px-4 py-2 rounded-lg border border-blue-200 hover:border-blue-300 transition-colors"
+              >
+                🔗 Webhook Sources
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -22,6 +22,12 @@ export default function LandingPage() {
           </Link>
           <div className="flex items-center gap-6">
             <Link
+              href="/help"
+              className="text-sm font-medium text-gray-500 hover:text-black transition-colors"
+            >
+              Help
+            </Link>
+            <Link
               href="https://github.com/aevrHQ/pinga-mvp"
               target="_blank"
               className="text-sm font-medium text-gray-500 hover:text-black transition-colors"
