@@ -5,7 +5,7 @@ import { Loader2, Plus, Trash2, Save } from "lucide-react";
 
 interface Channel {
   type: string;
-  config: any;
+  config: Record<string, unknown>;
   enabled: boolean;
   name?: string;
 }
@@ -139,7 +139,7 @@ export default function NotificationChannelsForm({
                     </p>
                   </div>
                 ) : (
-                  <>
+                  <div className="space-y-2">
                     <div className="flex items-center gap-2 text-xs text-green-600 bg-green-50 px-3 py-2 rounded-md">
                       <svg
                         className="w-4 h-4"
@@ -154,11 +154,18 @@ export default function NotificationChannelsForm({
                           d="M5 13l4 4L19 7"
                         />
                       </svg>
-                      Connected to Chat ID: {channel.config.chatId}
+                      Connected to Chat ID:{" "}
+                      {String(
+                        (channel.config as Record<string, unknown>).chatId ||
+                          "",
+                      )}
                     </div>
                     <input
                       type="password"
-                      value={channel.config.botToken || ""}
+                      value={
+                        ((channel.config as Record<string, unknown>)
+                          .botToken as string) || ""
+                      }
                       onChange={(e) =>
                         updateChannel(index, {
                           config: {
@@ -170,7 +177,7 @@ export default function NotificationChannelsForm({
                       placeholder="Bot Token (optional)"
                       className="w-full px-3 py-2 text-sm border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-black/5"
                     />
-                  </>
+                  </div>
                 )}
               </div>
             )}
@@ -178,7 +185,10 @@ export default function NotificationChannelsForm({
             {channel.type === "discord" && (
               <input
                 type="text"
-                value={channel.config.webhookUrl || ""}
+                value={
+                  ((channel.config as Record<string, unknown>)
+                    .webhookUrl as string) || ""
+                }
                 onChange={(e) =>
                   updateChannel(index, {
                     config: { ...channel.config, webhookUrl: e.target.value },

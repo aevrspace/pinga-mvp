@@ -27,7 +27,10 @@ export default async function SettingsPage() {
             Configure where you want to receive notifications
           </p>
           <NotificationChannelsForm
-            initialChannels={dbUser?.channels || []}
+            initialChannels={(dbUser?.channels || []).map((ch) => ({
+              ...ch,
+              config: ch.config as Record<string, unknown>,
+            }))}
             userId={user.userId.toString()}
           />
         </div>
