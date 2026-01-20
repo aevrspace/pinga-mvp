@@ -5,6 +5,7 @@ import SettingsForm from "./SettingsForm";
 import PinSettingsForm from "./PinSettingsForm";
 import NotificationChannelsForm from "./NotificationChannelsForm";
 import PreferencesForm from "./PreferencesForm";
+import WebhookInfo from "./WebhookInfo";
 
 export default async function SettingsPage() {
   const user = await getCurrentUser();
@@ -31,6 +32,7 @@ export default async function SettingsPage() {
       </div>
 
       <div className="grid gap-6">
+        <WebhookInfo userId={user.userId.toString()} />
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
           <h2 className="text-lg font-semibold mb-4">Notification Channels</h2>
           <p className="text-sm text-gray-500 mb-4">

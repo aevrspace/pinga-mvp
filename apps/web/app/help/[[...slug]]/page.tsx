@@ -34,6 +34,12 @@ const guides = [
     description: "Connect GitHub, Render, Vercel, and more",
     icon: "🔗",
   },
+  {
+    slug: "render",
+    title: "Render Integration",
+    description: "Setup guide for Render deployments",
+    icon: "☁️",
+  },
 ];
 
 export default async function HelpPage({ params }: HelpPageProps) {
