@@ -180,6 +180,37 @@ export async function POST(request: NextRequest) {
 
           await sendPlainMessage(welcomeMessage, chat.id.toString());
         }
+      } else if (!text.startsWith("/")) {
+        // Handle Chat / AI Assistant
+        const isGroup = chat.type === "group" || chat.type === "supergroup";
+        const botUsername = "pingapingbot"; // Ideally from env or me info, hardcoded for now based on help text
+
+        let shouldReply = !isGroup; // Always reply in DMs
+
+        // If in group, only reply if mentioned or replying to bot
+        if (isGroup) {
+          if (text.includes(`@${botUsername}`)) {
+            shouldReply = true;
+          }
+          if (update.message.reply_to_message?.from?.username === botUsername) {
+            shouldReply = true;
+          }
+        }
+
+        if (shouldReply) {
+          const { generateChatResponse } =
+            await import("@/lib/agents/chatAssistant");
+
+          const senderName = update.message.from?.first_name || "Friend";
+          const response = await generateChatResponse({
+            message: text,
+            senderName,
+          });
+
+          if (response) {
+            await sendPlainMessage(response, chat.id.toString());
+          }
+        }
       }
     }
 

@@ -205,7 +205,7 @@ export default function NotificationChannelsForm({
                         <li>
                           Add @
                           {process.env.NEXT_PUBLIC_TELEGRAM_BOT_NAME ||
-                            "your_bot"}{" "}
+                            "pingapingbot"}{" "}
                           to your Telegram group
                         </li>
                         <li>In the group, send this command:</li>
@@ -233,7 +233,7 @@ export default function NotificationChannelsForm({
                     // Personal DM Button
                     <div className="space-y-2">
                       <a
-                        href={`https://t.me/${process.env.NEXT_PUBLIC_TELEGRAM_BOT_NAME || "your_bot"}?start=channel_${userId}_${index}`}
+                        href={`https://t.me/${process.env.NEXT_PUBLIC_TELEGRAM_BOT_NAME || "pingapingbot"}?start=channel_${userId}_${index}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="block w-full text-center px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors"

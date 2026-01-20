@@ -80,7 +80,7 @@ MONGODB_URI=mongodb://localhost:27017/pinga-mvp
 ACCESS_TOKEN_SECRET=your-super-secret-key-at-least-32-chars
 
 # Telegram Bot
-TELEGRAM_BOT_TOKEN=your_bot_token_from_botfather
+TELEGRAM_BOT_TOKEN=@pingapingbot_token_from_botfather
 TELEGRAM_CHAT_ID=your_default_chat_id
 
 # Email (SMTP or Gmail)
