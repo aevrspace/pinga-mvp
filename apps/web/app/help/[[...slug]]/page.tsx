@@ -4,9 +4,9 @@ import path from "path";
 import Link from "next/link";
 
 interface HelpPageProps {
-  params: {
+  params: Promise<{
     slug?: string[];
-  };
+  }>;
 }
 
 const guides = [
@@ -37,7 +37,8 @@ const guides = [
 ];
 
 export default async function HelpPage({ params }: HelpPageProps) {
-  const slug = params.slug?.[0];
+  const { slug: slugArray } = await params;
+  const slug = slugArray?.[0];
 
   // If no slug, show help index
   if (!slug) {
