@@ -65,17 +65,28 @@ export class DiscordChannel implements NotificationChannel {
 
       if (!response.ok) {
         const errorText = await response.text();
+        let rawError: any = errorText;
+        try {
+          rawError = JSON.parse(errorText);
+        } catch {
+          // ignore
+        }
+
         console.error("Discord API error:", response.status, errorText);
         return {
           success: false,
           error: `Discord API error: ${response.status} - ${errorText}`,
+          rawError: {
+            status: response.status,
+            response: rawError,
+          },
         };
       }
 
       return { success: true };
     } catch (error) {
       console.error("Failed to send Discord message:", error);
-      return { success: false, error: String(error) };
+      return { success: false, error: String(error), rawError: error };
     }
   }
 }

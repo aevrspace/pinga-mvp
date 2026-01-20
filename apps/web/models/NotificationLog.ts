@@ -10,6 +10,8 @@ export interface INotificationLog {
   status: "success" | "failure" | "skipped";
   error?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  rawError?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metadata?: Record<string, any>;
   createdAt: Date;
 }
@@ -30,6 +32,7 @@ const NotificationLogSchema = new Schema<NotificationLogDocument>(
       required: true,
     },
     error: { type: String },
+    rawError: { type: Schema.Types.Mixed },
     metadata: { type: Map, of: Schema.Types.Mixed },
   },
   {

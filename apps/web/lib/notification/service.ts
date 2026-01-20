@@ -120,6 +120,7 @@ export class NotificationService {
               notification,
               result.success ? "success" : "failure",
               result.error || (result.success ? undefined : "Unknown failure"),
+              result.rawError,
             );
           } catch (error) {
             console.error(
@@ -251,6 +252,8 @@ export class NotificationService {
     notification: NotificationPayload,
     status: "success" | "failure" | "skipped",
     error?: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    rawError?: any,
   ) {
     try {
       await NotificationLog.create({
@@ -262,6 +265,7 @@ export class NotificationService {
         eventType: notification.eventType || "unknown",
         status,
         error,
+        rawError,
         metadata: {
           title: notification.title,
           payloadUrl: notification.payloadUrl,

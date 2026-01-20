@@ -91,12 +91,23 @@ export async function sendMessage(
 
     if (!response.ok) {
       const errorText = await response.text();
+      let rawError = errorText;
+      try {
+        rawError = JSON.parse(errorText);
+      } catch {
+        // failed to parse, keep text
+      }
+
       console.error(
         `[Telegram] API Error! Status: ${response.status} | Chat: ${chatId} | Response: ${errorText}`,
       );
       return {
         success: false,
         error: `Telegram API Error: ${response.status} - ${errorText}`,
+        rawError: {
+          status: response.status,
+          response: rawError,
+        },
       };
     }
 
@@ -108,7 +119,7 @@ export async function sendMessage(
     if (err.cause) {
       console.error("Cause:", err.cause);
     }
-    return { success: false, error: err.message };
+    return { success: false, error: err.message, rawError: err };
   }
 }
 
