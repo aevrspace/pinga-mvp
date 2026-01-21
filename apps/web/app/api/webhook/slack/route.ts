@@ -6,6 +6,24 @@ import User from "@/models/User";
 import { ModelMessage } from "ai";
 
 export async function POST(request: NextRequest) {
+  // Helper for logging
+  const CommonUtils_sendSlackMessageWithLog = async (
+    token: string,
+    channelId: string,
+    text: string,
+  ) => {
+    console.log(
+      `[Slack] Sending message to ${channelId}: ${text.substring(0, 50)}...`,
+    );
+    const res = await sendSlackMessage(token, channelId, text);
+    if (!res.success) {
+      console.error(`[Slack] Failed to send message:`, res.error);
+    } else {
+      console.log(`[Slack] Message sent successfully`);
+    }
+    return res;
+  };
+
   try {
     // 1. Verify Request Signature
     const { isValid, body } = await verifySlackRequest(
@@ -142,11 +160,10 @@ export async function POST(request: NextRequest) {
               // Telegram implementation sends to main chat.
               // Slack best practice for bots often is threading to avoid noise, but let's stick to main unless threaded.
 
-              await sendSlackMessage(
+              await CommonUtils_sendSlackMessageWithLog(
                 config.slack.botToken,
                 channelId,
                 result.text,
-                // threadTs // Uncomment to thread replies
               );
 
               // Update History
@@ -168,13 +185,24 @@ export async function POST(request: NextRequest) {
                   },
                 },
               );
+            } else {
+              console.log("[Slack Webhook] No text returned from agent");
             }
+          } else {
+            console.log(
+              "[Slack Webhook] User not found for channel:",
+              channelDoc._id,
+            );
           }
         } else {
+          console.log(
+            "[Slack Webhook] No linked channel found for Slack channel:",
+            channelId,
+          );
           // Not linked yet.
           // If it was a direct mention, we might want to say "I'm not linked".
           if (event.type === "app_mention") {
-            await sendSlackMessage(
+            await CommonUtils_sendSlackMessageWithLog(
               config.slack.botToken,
               channelId,
               `👋 I'm here! But I'm not linked to a Pinga channel yet.\n\nTo link me, use the "Connect with Slack" button in your dashboard or type "@Pinga link <your-link-code>".`,
